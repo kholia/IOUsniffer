@@ -5,6 +5,8 @@
 #include "misc.h"
 #include "config.h"
 
+extern struct config_s config;
+
 void debug(int level, const char *format, ...)
 {
     va_list args;

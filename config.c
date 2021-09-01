@@ -11,6 +11,8 @@
 #define NETIO_DIR "/tmp/netio0"
 #define NETMAP_FILE "NETMAP"
 
+struct config_s config;
+
 void display_help(char *name)
 {
 	printf("Usage: %s [-h] [-i <netio_dir>] [-n <NETMAP>] ", name);

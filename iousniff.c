@@ -41,6 +41,8 @@
 
 int SIGNAL_END = 0;
 
+extern struct config_s config;
+
 struct instances_s {
 	struct iou_s *ious;
 	struct pollfd *sockets;
@@ -51,10 +53,10 @@ struct sniff_s {
 	int if_major;
 	int if_minor;
 	int if_dlt; // data link type (http://www.tcpdump.org/linktypes.html)
-	
+
 	pcap_t *ph;
 	pcap_dumper_t *pd;
-	
+
 	struct sniff_s *next;
 };
 
@@ -62,7 +64,7 @@ struct iou_s {
 	int instance_id;
 	int sock;
 	struct sniff_s *sniffs;
-	
+
 	struct iou_s *next;
 };
 
@@ -207,7 +209,7 @@ void parse_one_line(char *line, int iou_id, struct sniff_s **sniffs)
 		return; // invalid line
 	}
 
-	// find first space (or an end) 
+	// find first space (or an end)
 	c = strpbrk(c, " \t\r\n");
 	if (!c || *c == '\r' || *c == '\n') { // found end
 		// assume ethernet if we're sniffing on all links
@@ -229,7 +231,7 @@ void parse_one_line(char *line, int iou_id, struct sniff_s **sniffs)
 		debug(5, "disabling sniffing because DLT is not specified and -o is\n");
 		return;
 	}
-	
+
 	debug(5, "before create_assign_sniff (%d, %d)\n", ret1, ret2);
 
 	// create sniff for the first half
@@ -552,7 +554,7 @@ int check_files(struct instances_s *obj)
 
 		if (got_it == 1) // already have it, continue to another socket
 			continue;
-		
+
 		// we didn't find this socket in our list, let's add it
 		// this means new IOU socket appeared
 		// which in turn means that new IOU has started
@@ -755,7 +757,7 @@ int main(int argc, char *argv[], char *envp[])
 	int i, ret;
 #define CHECK_INTERVAL 5
 	time_t last_time = time(NULL) - CHECK_INTERVAL - 1;
-	
+
 	// initialize global object
 	init_obj(&obj);
 
